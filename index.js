@@ -13,7 +13,7 @@ const connectionString =
   "mongodb+srv://igpmax456:1235@cluster0.eqqwj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 app.use((req, res, next) => {
   if (req.path === "/api/users/login" || req.path === "/api/users") {
-    return next(); // Skip token verification for these routes
+    return next();
   }
 
   const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
       }
       if (decoded) {
         req.user = decoded;
-        next(); // Proceed to the next middleware or route
+        next(); 
       }
     });
   } else {

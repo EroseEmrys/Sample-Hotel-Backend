@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const galleryItemSchema = mongoose.Schema({
   name: {
+    unique: true,
     type: String,
     required: true,
   },
