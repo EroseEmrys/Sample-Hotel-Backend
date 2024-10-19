@@ -4,13 +4,15 @@ import mongoose from "mongoose";
 import galleryItemRouter from "./routes/galleryItemRoute.js";
 import categoryRouter from "./routes/categoryRoute.js";
 import jwt, { decode } from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
 app.use(express.json());
 
-const connectionString =
-  "mongodb+srv://igpmax456:1235@cluster0.eqqwj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const connectionString = process.env.MONGO;
 app.use((req, res, next) => {
   if (req.path === "/api/users/login" || req.path === "/api/users") {
     return next();
@@ -25,7 +27,7 @@ app.use((req, res, next) => {
       }
       if (decoded) {
         req.user = decoded;
-        next(); 
+        next();
       }
     });
   } else {

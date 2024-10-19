@@ -1,6 +1,9 @@
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt'; // Fix the import statement
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export function postUsers(req, res) {
   const userData = req.body;
@@ -58,7 +61,8 @@ export function loginUser(req, res) {
         lastName: user.lastName,
       };
 
-      const token = jwt.sign(payLoad, process.env.JWT_SECRET || "defaultSecret", { expiresIn: "1h" }); // Use environment variable for secret
+      const token = jwt.sign(payLoad, process.env.JWT_SECRET, { expiresIn: "1h" });
+
       res.json({
         message: "User Found",
         user: user,
