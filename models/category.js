@@ -2,9 +2,15 @@ import mongoose from "mongoose";
 
 const categorySchema = mongoose.Schema({
   name: {
+    unique: true,
     type: String,
     required: true,
   },
+  features: [
+    {
+      type: String,
+    },
+  ],
   description: {
     type: String,
     required: true,
@@ -12,6 +18,9 @@ const categorySchema = mongoose.Schema({
   price: {
     type: Number,
     required: true,
+  },
+  image: {
+    type: String,
   },
 });
 

@@ -5,6 +5,7 @@ import galleryItemRouter from "./routes/galleryItemRoute.js";
 import categoryRouter from "./routes/categoryRoute.js";
 import jwt, { decode } from "jsonwebtoken";
 import dotenv from "dotenv";
+import roomRouter from "./routes/roomRoute.js";
 
 dotenv.config();
 
@@ -49,6 +50,8 @@ app.use("/api/users", userRouter);
 app.use("/api/gallery", galleryItemRouter);
 
 app.use("/api/categories", categoryRouter);
+
+app.use("/api/rooms", roomRouter);
 
 app.listen(5000, () => {
   console.log("Server is Running Suuda");
