@@ -9,7 +9,7 @@ feedbackRouter.post('/', createFeedback);
 // Route for approving feedback
 feedbackRouter.patch('/:feedbackId/approve', approveFeedback);
 
-// Route for getting all feedback (for admin)
+// Route for getting all feedback
 feedbackRouter.get('/', getAllFeedback);
 
 export default feedbackRouter;

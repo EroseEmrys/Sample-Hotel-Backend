@@ -6,6 +6,8 @@ import categoryRouter from "./routes/categoryRoute.js";
 import jwt, { decode } from "jsonwebtoken";
 import dotenv from "dotenv";
 import roomRouter from "./routes/roomRoute.js";
+import feedbackRouter from "./routes/feedbackRoutes.js";
+import bookingRouter from "./routes/bookingRoute.js";
 
 dotenv.config();
 
@@ -52,6 +54,10 @@ app.use("/api/gallery", galleryItemRouter);
 app.use("/api/categories", categoryRouter);
 
 app.use("/api/rooms", roomRouter);
+
+app.use("/api/feedback",feedbackRouter);
+
+app.use('/api/bookings', bookingRouter);
 
 app.listen(5000, () => {
   console.log("Server is Running Suuda");
