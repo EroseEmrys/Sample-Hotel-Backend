@@ -3,7 +3,7 @@ import {
   createCategory,
   getCategories,
   deleteCategory,
-  getCategoryByName
+  getCategoryByName,
 } from "../controllers/categoryController.js";
 
 const categoryRouter = express.Router();
@@ -12,7 +12,7 @@ categoryRouter.post("/", createCategory);
 
 categoryRouter.delete("/:categoryId", deleteCategory);
 
-categoryRouter.get("/",getCategories)
-categoryRouter.get("/:name",getCategoryByName)
+categoryRouter.get("/", getCategories);
+categoryRouter.get("/:name", getCategoryByName);
 
 export default categoryRouter;
