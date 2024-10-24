@@ -97,3 +97,38 @@ export function getCategoryByName(req, res) {
       });
     });
 }
+
+// Admin Only: Update Category
+export function updateCategory(req, res) {
+  const user = req.user;
+
+  if (!user) {
+    return res.status(401).json({ message: "Please Login First" });
+  }
+
+  if (user.type !== "admin") {
+    return res.status(403).json({ message: "Only Admin can update Categories" });
+  }
+
+  const categoryId = req.params.categoryId;
+  const updatedData = req.body;
+
+  // Find the category by ID and update it with new data
+  Category.findByIdAndUpdate(categoryId, updatedData, { new: true })
+    .then((category) => {
+      if (!category) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+
+      res.json({
+        message: "Category updated successfully",
+        category: category, // Return the updated category
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Failed to update Category",
+        error: error.message,
+      });
+    });
+}
