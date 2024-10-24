@@ -3,83 +3,63 @@ import Category from "../models/category.js";
 import Booking from "../models/booking.js";
 
 export async function createBooking(req, res) {
-  const user = req.user; // Authenticated user from middleware
-  const { roomId, guests, checkInDate, checkOutDate } = req.body;
+    // ... previous code ...
+    try {
+        // Validate check-in and check-out dates
+        if (!checkInDate || !checkOutDate) {
+            return res.status(400).json({ message: "Check-in and check-out dates are required" });
+        }
 
-  try {
-    // Ensure that the check-in and check-out dates are valid
-    if (!checkInDate || !checkOutDate) {
-      return res
-        .status(400)
-        .json({ message: "Check-in and check-out dates are required" });
+        // Find the room
+        const room = await Room.findById(roomId).populate("category");
+        if (!room) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        // Validate guest count
+        if (guests > room.maxGuests) {
+            return res.status(400).json({ message: `Room only accommodates up to ${room.maxGuests} guests` });
+        }
+
+        // Validate stay duration
+        const checkIn = new Date(checkInDate);
+        const checkOut = new Date(checkOutDate);
+        if (checkOut <= checkIn) {
+            return res.status(400).json({ message: "Check-out date must be after check-in date" });
+        }
+
+        const numberOfDays = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
+        if (isNaN(numberOfDays) || numberOfDays <= 0) {
+            return res.status(400).json({ message: "Invalid stay duration" });
+        }
+
+        // Calculate total price
+        const totalPrice = numberOfDays * room.category.price;
+        if (isNaN(totalPrice)) {
+            return res.status(500).json({ message: "Failed to calculate total price" });
+        }
+
+        // Create the booking
+        const newBooking = new Booking({
+            user: user._id,
+            room: room._id,
+            guests,
+            checkInDate,
+            checkOutDate,
+            totalPrice,
+        });
+
+        await newBooking.save();
+        res.status(201).json({
+            message: "Booking created successfully",
+            booking: newBooking,
+        });
+    } catch (error) {
+        console.error("Error creating booking:", error);
+        res.status(500).json({ message: "Failed to create booking", error: error.message });
     }
-
-    // Find the room by ID
-    const room = await Room.findById(roomId).populate("category"); // Populate the category for room
-    if (!room) {
-      return res.status(404).json({ message: "Room not found" });
-    }
-
-    // Log the room and its category price
-    console.log("Room category:", room.category);
-
-    // Check if the number of guests exceeds the room's maximum limit
-    if (guests > room.maxGuests) {
-      return res.status(400).json({
-        message: `Room only accommodates up to ${room.maxGuests} guests`,
-      });
-    }
-
-    // Calculate the stay duration
-    const checkIn = new Date(checkInDate);
-    const checkOut = new Date(checkOutDate);
-
-    if (checkOut <= checkIn) {
-      return res
-        .status(400)
-        .json({ message: "Check-out date must be after check-in date" });
-    }
-
-    const numberOfDays = (checkOut - checkIn) / (1000 * 60 * 60 * 24); // Calculate number of days
-    console.log("Number of days:", numberOfDays); // Log the number of days
-
-    if (isNaN(numberOfDays) || numberOfDays <= 0) {
-      return res.status(400).json({ message: "Invalid stay duration" });
-    }
-
-    // Calculate the total price based on the room category's price
-    const totalPrice = numberOfDays * room.category.price;
-    console.log("Total Price:", totalPrice); // Log the calculated total price
-
-    if (isNaN(totalPrice)) {
-      return res
-        .status(500)
-        .json({ message: "Failed to calculate total price" });
-    }
-
-    // Create the booking
-    const newBooking = new Booking({
-      user: user._id,
-      room: room._id,
-      guests,
-      checkInDate,
-      checkOutDate,
-      totalPrice,
-    });
-
-    await newBooking.save();
-
-    res.status(201).json({
-      message: "Booking created successfully",
-      booking: newBooking,
-    });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "Failed to create booking", error: error.message });
-  }
 }
+
 
 // Cancel a booking
 export async function cancelBooking(req, res) {

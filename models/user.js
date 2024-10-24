@@ -10,39 +10,39 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  firstName:{
-    type:String,
-    required:true
+  firstName: {
+    type: String,
+    required: true
   },
-  lastName:{
-    type:String,
-    required:true
+  lastName: {
+    type: String,
+    required: true
   },
-  type:{
-    type:String,
-    required:true,
+  type: {
+    type: String,
+    required: true,
     default: "customer"
   },
-  whatsApp:{
-    type:String,
-    required:false
+  whatsApp: {
+    type: String,
+    required: false
   },
-  phone:{
-    type:String,
-    required:true
+  phone: {
+    type: String,
+    required: true
   },
-  disabled:{
-    type:Boolean,
-    default:false,
-    required:true
+  disabled: {
+    type: Boolean,
+    default: false,
+    required: true
   },
-  emailVerified:{
-    type:Boolean,
-    required:true,
-    default:false
+  emailVerified: {
+    type: Boolean,
+    required: true,
+    default: false
   }
-
 });
 
-const User = mongoose.model("Users", userSchema);
+// Change the model name here to "User"
+const User = mongoose.model("User", userSchema);
 export default User;
