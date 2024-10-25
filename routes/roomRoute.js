@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRoom, getRoomById, disableRoom, activateRoom } from '../controllers/roomController.js';
+import { createRoom, getRoomById, disableRoom, activateRoom, deleteRoom } from '../controllers/roomController.js';
 
 const roomRouter = express.Router();
 
@@ -12,6 +12,9 @@ roomRouter.get('/:roomId', getRoomById);
 // Route for disabling a room
 roomRouter.patch('/:roomId/disable', disableRoom);
 
-export default roomRouter;
+roomRouter.delete("/:roomId", deleteRoom);
 
 roomRouter.patch('/:roomId/activate', activateRoom);
+
+export default roomRouter;
+

@@ -57,7 +57,7 @@ app.use("/api/rooms", roomRouter);
 
 app.use("/api/feedback",feedbackRouter);
 
-app.use('/api/bookings', bookingRouter);
+app.use('/api', bookingRouter);
 
 app.listen(5000, () => {
   console.log("Server is Running Suuda");

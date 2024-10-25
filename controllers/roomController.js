@@ -80,3 +80,26 @@ export function getRoomById(req, res) {
             res.status(500).json({ message: "Failed to activate Room", error: error.message });
         });
 }
+
+// Admin Only: Delete Room
+export function deleteRoom(req, res) {
+  const user = req.user; // Middleware should provide the authenticated user
+
+  if (!user || user.type !== "admin") {
+    return res.status(403).json({ message: "Only Admin can delete Rooms" });
+  }
+
+  const { roomId } = req.params;
+
+  Room.findByIdAndDelete(roomId)
+    .then((room) => {
+      if (!room) {
+        return res.status(404).json({ message: "Room not found" });
+      }
+      res.json({ message: "Room deleted successfully" });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: "Failed to delete Room", error: error.message });
+    });
+}

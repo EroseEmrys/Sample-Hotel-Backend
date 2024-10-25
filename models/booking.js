@@ -6,6 +6,10 @@ const bookingSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    userEmail: {
+        type: String,
+        required: true,
+    },
     room: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room',
@@ -28,6 +32,14 @@ const bookingSchema = new mongoose.Schema({
         enum: ['pending', 'confirmed', 'canceled'],
         default: 'pending',
     },
+    adminApproval: {
+        type: Boolean,
+        default: false,
+    },
+    cancellationReason: {
+        type: String,
+        default: '',
+    },
     totalPrice: {
         type: Number,
         required: true,
@@ -35,5 +47,4 @@ const bookingSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const Booking = mongoose.model('Booking', bookingSchema);
-
 export default Booking;
