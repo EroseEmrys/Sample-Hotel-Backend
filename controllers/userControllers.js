@@ -79,3 +79,34 @@ export function loginUser(req, res) {
       res.status(500).json({ message: "Error fetching user" });
     });
 }
+
+export function getUsers(req, res) {
+  const userId = req.user?.id; // Extract the user ID from the decoded token
+
+  if (!userId) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  User.findById(userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json({
+        message: "User Found",
+        user: {
+          id: user._id,
+          email: user.email,
+          type: user.type,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          whatsApp: user.whatsApp,
+          phone: user.phone,
+        },
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: "Error fetching user" });
+    });
+}

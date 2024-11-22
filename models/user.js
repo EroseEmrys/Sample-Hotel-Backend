@@ -8,39 +8,39 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
   },
   type: {
     type: String,
     required: true,
-    default: "customer"
+    default: "customer",
   },
   whatsApp: {
     type: String,
-    required: false
+    required: false,
   },
   phone: {
     type: String,
-    required: true
+    required: true,
   },
   disabled: {
     type: Boolean,
     default: false,
-    required: true
+    required: true,
   },
   emailVerified: {
     type: Boolean,
     required: true,
-    default: false
-  }
+    default: false,
+  },
 });
 
 // Change the model name here to "User"

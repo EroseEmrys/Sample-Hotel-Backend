@@ -8,10 +8,12 @@ import dotenv from "dotenv";
 import roomRouter from "./routes/roomRoute.js";
 import feedbackRouter from "./routes/feedbackRoutes.js";
 import bookingRouter from "./routes/bookingRoute.js";
-
+import cors from "cors";
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
@@ -55,9 +57,9 @@ app.use("/api/categories", categoryRouter);
 
 app.use("/api/rooms", roomRouter);
 
-app.use("/api/feedback",feedbackRouter);
+app.use("/api/feedback", feedbackRouter);
 
-app.use('/api', bookingRouter);
+app.use("/api", bookingRouter);
 
 app.listen(5000, () => {
   console.log("Server is Running Suuda");
